@@ -1,17 +1,13 @@
-mod fs_utils;
+mod file_entry;
 
-// include filesystem manipulation operations
-use fs_utils::FileEntry;
-// use std::fs;
-// use std::io;
+use file_entry::FileEntry;
 use std::path::PathBuf;
 use eframe::{egui, App, Frame};
+use file_entry::{handle_user_input, read_directory_contents};
 
-// Import everything from your fs_utils module
-use fs_utils::{handle_user_input, read_directory_contents};
-
-// This is our main application struct. It needs to be Default to be easily created.
+// compiler automatically creates default function which sets default values for the following data structure
 #[derive(Default)]
+// struct has all variable which interact with the ui
 struct FileExplorerApp {
     current_path: PathBuf,
     entries: Vec<FileEntry>,
@@ -19,25 +15,30 @@ struct FileExplorerApp {
     last_error: Option<String>,
 }
 
+// implement functions for app struct
 impl FileExplorerApp {
-    /// Constructor for our app. This is where you'll initialize state.
+    // app construtor
     fn new(_cc: &eframe::CreationContext<'_>) -> Self {
         let mut app = Self {
-            // Get the current working directory, or default to root if error
-            current_path: std::env::current_dir().unwrap_or_else(|_| PathBuf::from("/")),
+            // initialize app variables
+            current_path: PathBuf::from("/"),
             entries: Vec::new(),
-            input_text: std::env::current_dir().unwrap_or_else(|_| PathBuf::from("/")).display().to_string(),
+            input_text: "".to_string(),
             last_error: None,
         };
-        app.load_directory_contents();
+        // load current content
+        app.load_content();
+        //return app
         app
     }
 
-    fn load_directory_contents(&mut self) {
+    // load subfolders and files from current directory
+    fn load_content(&mut self) {
         // clear errors and entries
         self.entries.clear();
         self.last_error = None;
 
+        // call read dir function from file_entry
         match read_directory_contents(&self.current_path) {
             Ok(loaded_entries) => {
                 self.entries = loaded_entries;
@@ -61,7 +62,7 @@ impl App for FileExplorerApp {
                 let button = ui.button("Back");
                 if button.clicked() {
                     handle_user_input("up", &mut self.current_path);
-                    self.load_directory_contents();
+                    self.load_content();
                 }
 
                 let is_default_text = self.input_text == self.current_path.display().to_string();
@@ -83,14 +84,14 @@ impl App for FileExplorerApp {
                 // let response = ui.text_edit_singleline(&mut self.input_text);
                 if response.lost_focus() && ctx.input(|i| i.key_pressed(egui::Key::Enter)) {
                     handle_user_input(&self.input_text, &mut self.current_path);
-                    self.load_directory_contents();
+                    self.load_content();
                     // self.input_text.clear();
                 }
             });
 
             // display for current path
             // ui.label(format!("Current Path: {}", self.current_path.display()));
-
+            
             // separator element
             ui.separator();
 
@@ -123,9 +124,9 @@ impl App for FileExplorerApp {
                         // list current directories and paths
                         for entry in &self.entries {
                             // Simple display: icon + name
-                            let icon = if entry.is_dir { "📁 " } else { "📄 " };
+                            let icon = entry.determine_icon();
                             let response_labels = ui.selectable_label(false, format!("{}{}", icon, entry.name));       
-                            ui.label(entry.formatted_size());
+                            ui.label(entry.determine_size());
                             ui.end_row();
 
                             if response_labels.clicked() {
@@ -147,7 +148,7 @@ impl App for FileExplorerApp {
             // Aktionen ausführen, nachdem der Loop und damit der immutable borrow beendet ist
             if let Some(path) = new_path_to_navigate_to {
                 self.current_path = path;
-                self.load_directory_contents(); // Mutable borrow von self ist hier erlaubt
+                self.load_content(); // Mutable borrow von self ist hier erlaubt
             }
 
             if let Some(path) = file_to_open_path {
