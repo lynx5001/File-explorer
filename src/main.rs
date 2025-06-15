@@ -3,7 +3,7 @@ mod file_entry;
 use file_entry::FileEntry;
 use std::path::PathBuf;
 use eframe::{egui, App, Frame};
-use file_entry::{handle_user_input, read_directory_contents};
+use file_entry::{handle_user_input, read_directory};
 
 // compiler automatically creates default function which sets default values for the following data structure
 #[derive(Default)]
@@ -39,7 +39,7 @@ impl FileExplorerApp {
         self.last_error = None;
 
         // call read dir function from file_entry
-        match read_directory_contents(&self.current_path) {
+        match read_directory(&self.current_path) {
             Ok(loaded_entries) => {
                 self.entries = loaded_entries;
                 self.input_text = self.current_path.display().to_string();
