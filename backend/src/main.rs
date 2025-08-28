@@ -5,7 +5,8 @@ use std::path::PathBuf;
 use eframe::{egui, App, Frame};
 use file_entry::{handle_user_input, read_directory};
 
-// compiler automatically creates default function which sets default values for the following data structure
+// compiler automatically creates default function, 
+// which sets default values for the following data structure
 #[derive(Default)]
 // struct has all variable which interact with the ui
 struct FileExplorerApp {
@@ -56,6 +57,8 @@ impl FileExplorerApp {
 
 impl App for FileExplorerApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut Frame) {
+
+        
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.horizontal(|ui| {
                 // move back button
