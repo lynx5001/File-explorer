@@ -158,6 +158,8 @@ pub fn read_directory(directory: &PathBuf) -> Result<Vec<FileEntry>, String> {
     Ok(entries)
 }
 
+// functions to write and delete directories and files
+
 // Function to handle user input from search bar
 pub fn handle_user_input(input: &str, p_current_directory: &mut PathBuf){
     if input.trim() == "up"{

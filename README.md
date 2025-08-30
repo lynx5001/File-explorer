@@ -1,5 +1,7 @@
 # file_explorer
-Create a simple file explorer that allows users to navigate and view their system's files and directories. A simple user interface that allows you to browse and manage your files.
+This a simple file explorer that allows users to navigate and view their system's files and directories. With a simple user interface that allows to browse and manage files with simple ux.
+
+The backend is written in rust to achieve performance and the frontend is written in react.
 
 Key Features
 
