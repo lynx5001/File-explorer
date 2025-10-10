@@ -24,7 +24,7 @@ By leveraging **Rust** for the core logic and **React** for the interface, the a
 
 ---
 
-## 🛠️ Technology Stack
+## Tech Stack
 
 | Layer      | Technology     |
 |------------|----------------|
