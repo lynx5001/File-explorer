@@ -3,14 +3,10 @@
 A fast, lightweight, and cross-platform **file explorer** built with a **Rust backend** for performance and a **React frontend** for a clean and responsive user interface.  
 This project enables users to seamlessly browse, search, and manage files and directories through an intuitive and efficient UI.
 
----
-
 ## Project Overview
 
 The goal of this project is to provide a modern, cross-platform file management tool with smooth UX and system-level performance.  
 By leveraging **Rust** for the core logic and **React** for the interface, the app achieves both speed and usability.
-
----
 
 ## Key Features
 
@@ -22,16 +18,12 @@ By leveraging **Rust** for the core logic and **React** for the interface, the a
 - **File Opening Support**: Open files using the system default application (platform-specific handling).
 - **Minimalist UX**: Clean layout with intuitive navigation and file detail display (name, size, icon).
 
----
-
 ## Tech Stack
 
 | Layer      | Technology     |
 |------------|----------------|
 | **Frontend** | egui, React (planned or external) |
 | **Backend** | Rust |
-
----
 
 ### Requirements
 
