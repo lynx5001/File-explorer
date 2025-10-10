@@ -41,7 +41,6 @@ By leveraging **Rust** for the core logic and **React** for the interface, the a
 ### Run the Rust GUI App
 
 ```
-bash
 cargo run
 ```
 
