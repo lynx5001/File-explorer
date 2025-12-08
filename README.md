@@ -43,6 +43,7 @@ This command launches the native file explorer UI using egui.
 - [ ] Multi-select and batch file operations
 - [ ] File previews and additional metadata
 - [ ] Desktop packaging via tauri or similar tools
+- [ ] merge, split, de-/encrypt pdfs (maybe intelligent split)
 
 ### Learning outcomes
 - Developed a native GUI using Rust + egui
