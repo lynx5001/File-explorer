@@ -173,3 +173,43 @@ pub fn handle_user_input(input: &str, p_current_directory: &mut PathBuf){
         p_current_directory.push(input.trim());
     }
 }
+
+// function to delete directory or file
+pub fn delete_entry(path: &str) -> Result<(), String> {
+    let p = std::path::Path::new(path);
+    if p.is_dir() {
+        fs::remove_dir_all(p).map_err(|e| e.to_string())
+    } else {
+        fs::remove_file(p).map_err(|e| e.to_string())
+    }
+}
+
+pub fn copy_to_clipboard(path: &str, clipboard: &mut Option<String>) {
+    *clipboard = Some(path.to_string());
+}
+
+pub fn paste_from_clipboard(clipboard: &Option<String>, target_dir: &PathBuf) -> Result<(), String> {
+    let src = clipboard.as_ref().ok_or("Zwischenspeicher leer")?;
+    let src_path = std::path::Path::new(src);
+    let file_name = src_path.file_name().ok_or("Ungültiger Pfad")?;
+    let dest = target_dir.join(file_name);
+    if src_path.is_dir() {
+        copy_dir_recursive(src_path, &dest)
+    } else {
+        fs::copy(src_path, &dest).map(|_| ()).map_err(|e| e.to_string())
+    }
+}
+
+fn copy_dir_recursive(src: &std::path::Path, dst: &std::path::Path) -> Result<(), String> {
+    fs::create_dir_all(dst).map_err(|e| e.to_string())?;
+    for entry in fs::read_dir(src).map_err(|e| e.to_string())? {
+        let entry = entry.map_err(|e| e.to_string())?;
+        let dest = dst.join(entry.file_name());
+        if entry.path().is_dir() {
+            copy_dir_recursive(&entry.path(), &dest)?;
+        } else {
+            fs::copy(entry.path(), &dest).map_err(|e| e.to_string())?;
+        }
+    }
+    Ok(())
+}
