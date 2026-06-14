@@ -1,0 +1,33 @@
+[package]
+name = "accessible-file-explorer"
+version = "0.1.0"
+description = "A high-efficiency, low-noise desktop file explorer optimized for screen reader users and keyboard-centric workflows."
+authors = ["Your Name <your.email@example.com>"]
+license = ""
+repository = ""
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "2.0.0", features = [] }
+
+[dependencies]
+tauri = { version = "2.0.0", features = ["tray-icon"] }
+tauri-plugin-fs = "2"
+tauri-plugin-process = "2"
+tauri-plugin-shell = "2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# For file system watching (from README)
+notify = "6.1.1"
+
+# For structured logging (from README)
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[features]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
